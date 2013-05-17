@@ -1,0 +1,11 @@
+@* Web Socket helper *@
+@(name: String)(implicit request: RequestHeader)
+
+<script src="@routes.Assets.at("WS_Manager.js")" type="text/javascript"></script>
+<script type="text/javascript" charset="utf-8">
+	var @name = new WS_Manager(); 
+	@name .id = "@name";
+</script>
+
+<div id="__placeholder_@name">
+</div>

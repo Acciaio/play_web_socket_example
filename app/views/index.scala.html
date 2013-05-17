@@ -1,0 +1,55 @@
+@(message: String)(implicit request: RequestHeader)
+
+@import helper._
+
+@main("Welcome to Play 2.1") {
+    
+    <h1>@message</h1>
+    
+    @ws("WS_Prova")
+    <script type="text/javascript" charset="utf-8">
+    
+    $(function() {    
+    	WS_Prova.input = {
+    		address : "@routes.Application.ws.webSocketURL()",
+    		onopen : function() {
+    					var obj = {
+        					"echo" : true,
+        					"fromclient" : true
+        				}
+        	
+        				WS_Prova.send(obj);
+    					},
+    		onmessage : function(msg) {
+    						console.log("received" +JSON.stringify(msg));
+    					},
+    		onclose : function(msg) {
+    						console.log("closed");
+    					}
+    	}
+    		
+    	WS_Prova.init();
+    });
+    	
+    function sendMsgBroadcast() {
+  		var obj = {
+        		"echo" : false,
+        		"toeveryone" : true
+        	}
+        	
+    	WS_Prova.send(obj);
+  	}
+  
+  	function sendMsgToMe() {
+  		var obj = {
+        		"echo" : true,
+        		"toeveryone" : false
+        	}
+        	
+    	WS_Prova.send(obj);
+  	}
+    </script>
+    
+<button onClick="sendMsgBroadcast();">Broadcast</button>
+<button onClick="sendMsgToMe();">Echo</button>
+}
